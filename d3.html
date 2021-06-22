@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="app" v-cloak class="m-3">
+        <div >
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">非赛季巅峰</span>
+                </div>
+                <input type="number" class="form-control" placeholder="请输入内容" aria-label="Username"
+                    aria-describedby="basic-addon1" v-model="num">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">赛季巅峰</span>
+                </div>
+                <input type="number" class="form-control" placeholder="请输入内容" aria-label="Username"
+                    aria-describedby="basic-addon1" v-model="numTwo">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-info" @click="test">计算</button>
+        </div>
+
+
+    <div class="" v-if="info">
+        <p>累计巅峰等级 {{info.level}}</p>
+        <p>经验值为 {{info.total}}</p>
+        <p>升级到下一级别需要经验 {{info.next_level}}</p>
+        <p>与上一等级经验相差 {{info.difference}}</p>
+    </div>
+     <div v-else>{{txt}}</div>
+    </div>
+
+
+    </div>
+
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
+<script src="./ds.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            num: '',
+            numTwo: '',
+            info: null,
+            txt:''
+
+        },
+        methods: {
+            test: function () {
+                var b = d3.paragon[vm.num].total + d3.paragon[vm.numTwo].total
+                let d = 0
+                vm.txt = ''
+                d3.paragon.some((item, i) => {
+                    if (item.total >= b) {
+                        d = item.level
+                        return true
+                    }
+                });
+                if (d !== 0) {
+                    vm.info = d3.paragon[d - 1]
+                }else{
+                    vm.info = null
+                    vm.txt = "你已经超神了!!!"
+                }
+            }
+        }
+    })
+</script>
+
+</html>
